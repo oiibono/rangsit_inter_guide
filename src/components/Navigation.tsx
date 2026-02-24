@@ -8,15 +8,17 @@ import {
   Users,
   Bus,
   LogIn,
+  LogOut,
   UserCog,
   FilePenLine,
 } from "lucide-react";
 import RIG from "@/assets/RIG.png";
 import { Button } from "@/components/ui/button";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js";
+import { useUserRole } from "@/hooks/useUserRole";
 
 interface NavigationProps {
   isSidebarOpen: boolean;
@@ -26,7 +28,9 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const [session, setSession] = useState<Session | null>(null);
+  const { role } = useUserRole();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -40,7 +44,14 @@ const Navigation: React.FC<NavigationProps> = ({ isSidebarOpen, setIsSidebarOpen
     return () => {
       authListener.subscription.unsubscribe()
     }
-  }, [])
+  }, []);
+
+  const isAdminOrClubAdmin = role === "admin" || role === "club_admin";
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/admin-login");
+    setIsMenuOpen(false);
+  };
 
   const navLinks = [
     { name: "Home", href: "/", icon: <Home /> },
@@ -105,11 +116,19 @@ const Navigation: React.FC<NavigationProps> = ({ isSidebarOpen, setIsSidebarOpen
                 ))}
                 <div className="flex flex-col gap-2 mt-4 px-4">
                   {session ? (
-                    location.pathname !== '/admin-panel' && (
-                      <Link to="/admin-panel" className="w-full">
-                        <Button variant="ghost" className="w-full">Admin</Button>
-                      </Link>
-                    )
+                    <>
+                      {location.pathname !== '/admin-panel' && (
+                        <Link to="/admin-panel" className="w-full">
+                          <Button variant="ghost" className="w-full">Admin</Button>
+                        </Link>
+                      )}
+                      {isAdminOrClubAdmin && (
+                        <Button variant="ghost" className="w-full text-destructive hover:text-destructive" onClick={handleLogout}>
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Logout
+                        </Button>
+                      )}
+                    </>
                   ) : (
                     <Link to="/admin-login" className="w-full">
                       <Button variant="ghost" className="w-full">Login</Button>
@@ -154,21 +173,37 @@ const Navigation: React.FC<NavigationProps> = ({ isSidebarOpen, setIsSidebarOpen
           </div>
           <div className="mt-auto flex flex-col gap-2 w-full px-4">
             {session ? (
-              location.pathname !== '/admin-panel' && (
-                <Link to="/admin-panel">
+              <>
+                {location.pathname !== '/admin-panel' && (
+                  <Link to="/admin-panel">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={cn(
+                        "w-full flex items-center gap-4",
+                        !isSidebarOpen && "justify-center"
+                      )}
+                    >
+                      <UserCog />
+                      {isSidebarOpen && <span>Admin</span>}
+                    </Button>
+                  </Link>
+                )}
+                {isAdminOrClubAdmin && (
                   <Button
                     variant="ghost"
                     size="sm"
                     className={cn(
-                      "w-full flex items-center gap-4",
+                      "w-full flex items-center gap-4 text-destructive hover:text-destructive",
                       !isSidebarOpen && "justify-center"
                     )}
+                    onClick={handleLogout}
                   >
-                    <UserCog />
-                    {isSidebarOpen && <span>Admin</span>}
+                    <LogOut />
+                    {isSidebarOpen && <span>Logout</span>}
                   </Button>
-                </Link>
-              )
+                )}
+              </>
             ) : (
               <Link to="/admin-login">
                 <Button
