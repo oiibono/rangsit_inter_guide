@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Footer from "@/components/Footer";
 
+const PLACEHOLDER_IMAGE = "https://placehold.co/600x240?text=Announcement";
+
 type Announcement = {
   id: number;
   title: string;
@@ -65,15 +67,22 @@ const Announcements = () => {
     const clubName = showClubName && "club_id" in announcement && announcement.club_id
       ? (announcement.clubs as { name: string | null } | null)?.name ?? clubsMap[announcement.club_id] ?? `Club ${announcement.club_id}`
       : null;
+    const imageUrl = announcement.image_url?.trim() || PLACEHOLDER_IMAGE;
     return (
       <Card
         key={announcement.id}
         className="p-6 border-2 hover:border-primary transition-all duration-300 hover:shadow-card bg-card group cursor-pointer"
       >
         <img
-          src={announcement.image_url}
+          src={imageUrl}
           alt={announcement.title}
           className="w-full h-48 object-cover mb-4 rounded"
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (target.src !== PLACEHOLDER_IMAGE) {
+              target.src = PLACEHOLDER_IMAGE;
+            }
+          }}
         />
         {clubName && (
           <p className="text-xs font-medium text-primary mb-2">{clubName}</p>

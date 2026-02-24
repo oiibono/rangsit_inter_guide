@@ -1,5 +1,16 @@
 # Supabase setup
 
+## Storage: make images load (announcements & club_announcements)
+
+For announcement and club announcement images to show, the Storage bucket must be **public**:
+
+1. In Supabase go to **Storage** in the sidebar.
+2. If the bucket **`announcements`** does not exist, click **New bucket**, name it `announcements`, and create it.
+3. Open the **announcements** bucket → click the **⋮** menu → **Make public** (or in Configuration, enable **Public bucket**).
+4. Under **Policies**, ensure there is a policy that allows **public read** (e.g. `SELECT` for `anon`), or rely on “Make public” which does this.
+
+If the bucket stays private, image URLs from uploads will return 403 and the app will show a placeholder instead.
+
 ## Running the migration
 
 1. Open your [Supabase](https://supabase.com) project.

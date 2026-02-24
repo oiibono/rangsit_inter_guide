@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,11 @@ import { Pencil, Trash2, PlusCircle } from "lucide-react";
 const BUCKET_NAME = "announcements";
 const TABLE_NAME = "club_announcements";
 const DEFAULT_IMAGE_URL = "https://stock.adobe.com/th/search?k=image";
+const IMAGE_EXT = /\.(jpe?g|png|gif|webp|avif|svg)(\?|$)/i;
+function isImageUrl(url: string | null): boolean {
+  if (!url) return false;
+  return IMAGE_EXT.test(url) || !/\.[a-z0-9]+(\?|$)/i.test(url);
+}
 
 export type ClubAnnouncement = {
   id: number;
@@ -71,7 +76,6 @@ const defaultForm = {
   subtitle: "",
   image_url: "",
   date: new Date().toISOString().slice(0, 10),
-  see_more_url: "",
   category: "",
   club_id: "" as string,
 };
@@ -90,6 +94,8 @@ export default function ClubAnnouncementsPage() {
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [listLoading, setListLoading] = useState(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isAdmin = role === "admin";
   const isClubAdmin = role === "club_admin";
@@ -150,6 +156,7 @@ export default function ClubAnnouncementsPage() {
       club_id: isAdmin ? (clubFilter !== "all" ? clubFilter : "") : String(lockedClubId ?? ""),
     });
     setImageFile(null);
+    setImagePreviewUrl(null);
     setEditingId(null);
     setDialogOpen(true);
   };
@@ -161,21 +168,32 @@ export default function ClubAnnouncementsPage() {
       subtitle: a.subtitle ?? "",
       image_url: a.image_url ?? "",
       date: a.date ? a.date.slice(0, 10) : new Date().toISOString().slice(0, 10),
-      see_more_url: a.see_more_url ?? "",
       category: a.category ?? "",
       club_id: String(a.club_id),
     });
     setImageFile(null);
+    setImagePreviewUrl(null);
     setEditingId(a.id);
     setDialogOpen(true);
   };
 
   const closeDialog = () => {
+    if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
+    setImagePreviewUrl(null);
     setDialogOpen(false);
     setEditingId(null);
     setForm(defaultForm);
     setImageFile(null);
     setActionError(null);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
+    setImagePreviewUrl(null);
+    setImageFile(file ?? null);
+    if (file) setImagePreviewUrl(URL.createObjectURL(file));
+    e.target.value = "";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -200,7 +218,7 @@ export default function ClubAnnouncementsPage() {
         .from(BUCKET_NAME)
         .upload(path, imageFile, { upsert: false });
       if (uploadError) {
-        setActionError(`Image upload failed (${uploadError.message}). Saving with default image.`);
+        setActionError(`Upload failed (${uploadError.message}). Saving with default.`);
         imageUrlToSave = DEFAULT_IMAGE_URL;
       } else {
         const { data: urlData } = supabase.storage.from(BUCKET_NAME).getPublicUrl(uploadData.path);
@@ -215,7 +233,7 @@ export default function ClubAnnouncementsPage() {
       subtitle: form.subtitle.trim() || null,
       image_url: imageUrlToSave,
       date: form.date || null,
-      see_more_url: form.see_more_url.trim() || null,
+      see_more_url: null,
       category: form.category.trim() || null,
       club_id: resolvedClubId,
     };
@@ -370,7 +388,7 @@ export default function ClubAnnouncementsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[80px]">Image</TableHead>
+                  <TableHead className="w-[80px]">File</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Date</TableHead>
@@ -382,11 +400,24 @@ export default function ClubAnnouncementsPage() {
                 {announcements.map((a) => (
                   <TableRow key={a.id}>
                     <TableCell>
-                      <img
-                        src={a.image_url || ""}
-                        alt=""
-                        className="h-12 w-12 rounded object-cover"
-                      />
+                      {a.image_url && isImageUrl(a.image_url) ? (
+                        <img
+                          src={a.image_url}
+                          alt=""
+                          className="h-12 w-12 rounded object-cover"
+                        />
+                      ) : a.image_url ? (
+                        <a
+                          href={a.image_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-primary hover:underline truncate max-w-[80px] block"
+                        >
+                          File
+                        </a>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">—</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       <div className="font-medium">{a.title}</div>
@@ -475,16 +506,6 @@ export default function ClubAnnouncementsPage() {
                 onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
               />
             </div>
-            <div>
-              <Label htmlFor="see_more_url">See more URL</Label>
-              <Input
-                id="see_more_url"
-                type="url"
-                value={form.see_more_url}
-                onChange={(e) => setForm((f) => ({ ...f, see_more_url: e.target.value }))}
-                placeholder="https://..."
-              />
-            </div>
             {isAdmin && (
               <div>
                 <Label>Club (required)</Label>
@@ -519,22 +540,54 @@ export default function ClubAnnouncementsPage() {
               </div>
             )}
             <div>
-              <Label>Image</Label>
-              <Input
+              <Label>Upload file</Label>
+              <p className="text-xs text-muted-foreground mb-2">
+                Choose a file from your device. It will be uploaded when you save.
+              </p>
+              <input
+                ref={fileInputRef}
                 type="file"
-                accept="image/*"
-                onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
+                className="hidden"
+                onChange={handleFileChange}
               />
-              {!imageFile && form.image_url && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  Current: {form.image_url.slice(0, 50)}…
-                </p>
-              )}
-              {imageFile && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  New file: {imageFile.name}
-                </p>
-              )}
+              <div className="flex flex-col sm:flex-row gap-4 items-start">
+                <div className="flex flex-col gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    Choose file
+                  </Button>
+                  {imageFile && (
+                    <span className="text-xs text-muted-foreground">
+                      Selected: {imageFile.name}
+                    </span>
+                  )}
+                </div>
+                <div className="rounded-md border border-border overflow-hidden bg-muted/30 w-32 h-32 flex items-center justify-center shrink-0 p-2">
+                  {imagePreviewUrl && imageFile?.type.startsWith("image/") ? (
+                    <img
+                      src={imagePreviewUrl}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : imageFile ? (
+                    <span className="text-xs text-muted-foreground text-center break-all">
+                      File: {imageFile.name}
+                    </span>
+                  ) : form.image_url ? (
+                    <img
+                      src={form.image_url}
+                      alt="Current"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-xs text-muted-foreground">No file</span>
+                  )}
+                </div>
+              </div>
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={closeDialog}>

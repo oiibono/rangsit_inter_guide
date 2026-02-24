@@ -42,6 +42,7 @@ import { Pencil, Trash2, PlusCircle } from "lucide-react";
 
 // Create bucket "announcements" in Supabase Storage (Dashboard → Storage) if it doesn't exist
 const BUCKET_NAME = "announcements";
+const PLACEHOLDER_IMAGE = "https://placehold.co/96x96?text=Image";
 
 export type Announcement = {
   id: number;
@@ -354,9 +355,14 @@ export default function AnnouncementsPage() {
                   <TableRow key={a.id}>
                     <TableCell>
                       <img
-                        src={a.image_url || ""}
+                        src={a.image_url?.trim() || PLACEHOLDER_IMAGE}
                         alt=""
-                        className="h-12 w-12 rounded object-cover"
+                        className="h-12 w-12 rounded object-cover bg-muted"
+                        onError={(e) => {
+                          if (e.currentTarget.src !== PLACEHOLDER_IMAGE) {
+                            e.currentTarget.src = PLACEHOLDER_IMAGE;
+                          }
+                        }}
                       />
                     </TableCell>
                     <TableCell>
