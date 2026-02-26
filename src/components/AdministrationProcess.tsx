@@ -53,18 +53,18 @@ const AdministrationProcess = () => {
   ];
 
   return (
-    <section id="administration" className="py-20 bg-background">
-      <div className="container mx-auto px-8">
-        <div className="text-center mb-16">
-          <h2 className="font-playfair text-4xl md:text-5xl font-bold text-foreground mb-4 uppercase">
+    <section id="administration" className="py-12 sm:py-16 lg:py-20 bg-background">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10 sm:mb-16">
+          <h2 className="font-playfair text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4 uppercase">
             Administration Process
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
             Comprehensive guide to essential administrative procedures and services
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 max-w-7xl mx-auto">
           {processes.map((process) => {
             const Icon = process.icon;
             return (
@@ -76,14 +76,14 @@ const AdministrationProcess = () => {
                 <img
                   src={process.image}
                   alt={process.title}
-                  className="w-full h-48 object-cover transition-all duration-300 group-hover:scale-110 group-hover:brightness-75"
+                  className="w-full h-40 sm:h-48 object-cover transition-all duration-300 group-hover:scale-110 group-hover:brightness-75"
                 />
-                <div className="p-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-card">
+                <div className="p-4 sm:p-6">
+                  <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-card">
                       <Icon className="w-7 h-7 text-primary-foreground" />
                     </div>
-                    <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors uppercase">
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors uppercase">
                       {process.title}
                     </h3>
                   </div>

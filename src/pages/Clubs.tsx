@@ -36,16 +36,13 @@ const Clubs = () => {
 
   // The component's render method
   return (
-    <> {/* React Fragment to return multiple elements */}
-      <main className="pt-20 lg:pt-0">
-        {/* Main section for the student clubs content */}
-        <section id="clubs" className="pb-20 lg:pt-20 bg-background">
-          {/* Container for responsive layout */}
-          <div className="container mx-auto px-4">
+    <>
+      <div>
+        <section id="clubs" className="pb-16 sm:pb-20 pt-6 sm:pt-8 lg:pt-20 bg-background">
+          <div className="container mx-auto px-4 sm:px-6">
             {/* Section for the main title and description */}
-            <div className="text-center mb-16">
-              {/* Main heading for the student clubs page */}
-              <h2 className="font-playfair text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <div className="text-center mb-10 sm:mb-16">
+              <h2 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
                 Student Clubs & Organizations
               </h2>
               {/* Description text */}
@@ -55,7 +52,7 @@ const Clubs = () => {
             </div>
 
             {/* Grid layout for displaying club cards */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
               {/* Maps through the 'clubs' array to render a Card for each club */}
               {clubs.map((club) => {
                 // Dynamically assign the icon component based on the club's icon property
@@ -65,7 +62,7 @@ const Clubs = () => {
                     key={club.id}
                     className="p-6 border-2 hover:border-primary transition-all duration-300 hover:shadow-elegant bg-card group cursor-pointer"
                   >
-                  <img src={club.image_url} alt={club.name} className="w-full h-48 object-cover mb-4" />
+                  <img src={club.image_url} alt={club.name} className="w-full h-40 sm:h-48 object-cover mb-4" />
                   <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                     {club.name}
                   </h3>
@@ -83,7 +80,7 @@ const Clubs = () => {
             </div>
           </div>
         </section>
-      </main>
+      </div>
       {/* Renders the footer */}
       <Footer />
     </>

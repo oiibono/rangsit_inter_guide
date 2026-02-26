@@ -76,7 +76,7 @@ const Announcements = () => {
         <img
           src={imageUrl}
           alt={announcement.title}
-          className="w-full h-48 object-cover mb-4 rounded"
+          className="w-full h-40 sm:h-48 object-cover mb-4 rounded"
           onError={(e) => {
             const target = e.currentTarget;
             if (target.src !== PLACEHOLDER_IMAGE) {
@@ -109,11 +109,11 @@ const Announcements = () => {
 
   return (
     <>
-      <main className="pt-20 lg:pt-0 lg:mr-[80px]">
-        <section id="announcements" className="pb-20 lg:pt-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="font-playfair text-4xl md:text-5xl font-bold text-foreground mb-4">
+      <div>
+        <section id="announcements" className="pb-16 sm:pb-20 pt-6 sm:pt-8 lg:pt-20 bg-muted/30">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
                 Announcements
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -122,12 +122,12 @@ const Announcements = () => {
             </div>
 
             <Tabs defaultValue="general" className="max-w-6xl mx-auto">
-              <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+              <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6 sm:mb-8">
                 <TabsTrigger value="general">Announcements</TabsTrigger>
                 <TabsTrigger value="clubs">Club announcements</TabsTrigger>
               </TabsList>
               <TabsContent value="general" className="mt-0">
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   {general.length === 0 ? (
                     <p className="col-span-2 text-center text-muted-foreground py-12">
                       No general announcements at the moment.
@@ -138,7 +138,7 @@ const Announcements = () => {
                 </div>
               </TabsContent>
               <TabsContent value="clubs" className="mt-0">
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   {clubAnnouncements.length === 0 ? (
                     <p className="col-span-2 text-center text-muted-foreground py-12">
                       No club announcements at the moment.
@@ -151,7 +151,7 @@ const Announcements = () => {
             </Tabs>
           </div>
         </section>
-      </main>
+      </div>
       <Footer />
     </>
   );

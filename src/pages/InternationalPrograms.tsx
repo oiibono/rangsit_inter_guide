@@ -81,37 +81,34 @@ const programs = [
 const InternationalPrograms = () => {
   // The component's render method
   return (
-    // Main container div for the entire page, ensuring minimum screen height and setting background color
     <div className="min-h-screen bg-background">
-      <main className="pt-20 lg:pt-0 lg:mr-[80px]">
-        {/* Container for the main content of the page, with responsive padding */}
-        <div className="container mx-auto px-4">
-          {/* Main heading for the international programs section */}
-          <h1 className="text-5xl font-bold mb-8 pt-4 lg:pt-24">Undergraduate International Programs</h1>
+      <div className="pt-6 sm:pt-8 lg:pt-24 pb-16">
+        <div className="container mx-auto px-4 sm:px-6">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">
+            Undergraduate International Programs
+          </h1>
           {/* Grid layout for displaying program cards, responsive across different screen sizes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {/* Maps through the 'programs' array to render a Card for each program */}
             {programs.map((program) => (
               // Card component for an individual program
               <Card key={program.name.line2}> {/* Unique key for list rendering */}
                 {/* CardHeader for the program image */}
                 <CardHeader>
-                  {/* Program image, with alt text for accessibility and styling for containment */}
-                  <img src={program.image} alt={program.name.line2} className="w-full h-48 object-contain" />
+                  <img src={program.image} alt={program.name.line2} className="w-full h-40 sm:h-48 object-contain" />
                 </CardHeader>
                 {/* CardContent for the program title */}
                 <CardContent>
-                  {/* Program title */}
                   <CardTitle>
-                    <div className="text-lg">{program.name.line1}</div>
-                    <div className="text-2xl">{program.name.line2}</div>
+                    <div className="text-base sm:text-lg">{program.name.line1}</div>
+                    <div className="text-xl sm:text-2xl">{program.name.line2}</div>
                   </CardTitle>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
-      </main>
+      </div>
       {/* Renders the footer section */}
       <Footer />
     </div>

@@ -63,22 +63,22 @@ const Navigation: React.FC<NavigationProps> = ({ isSidebarOpen, setIsSidebarOpen
 
   return (
     <>
-      {/* Top Bar for Logo and Mobile Menu */}
-      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border shadow-card lg:hidden">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
+      {/* Mobile Top Bar - Fixed at top for all viewports below lg */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-card lg:hidden">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-16 sm:h-[72px]">
+            {/* Logo - compact on mobile */}
+            <Link to="/" className="flex items-center gap-2 sm:gap-3 group min-w-0" onClick={() => setIsMenuOpen(false)}>
               <img
                 src={RIG}
                 alt="Rangsit University Logo"
-                className="w-16 h-16"
+                className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0"
               />
-              <div className="hidden md:block">
-                <div className="font-playfair text-xl font-bold text-primary">
+              <div className="min-w-0">
+                <div className="font-playfair text-base sm:text-xl font-bold text-primary truncate">
                   Rangsit Inter Guide
                 </div>
-                <div className="text-xs text-muted-foreground font-medium">
+                <div className="text-[10px] sm:text-xs text-muted-foreground font-medium hidden sm:block">
                   Excellence in Education
                 </div>
               </div>
@@ -87,7 +87,8 @@ const Navigation: React.FC<NavigationProps> = ({ isSidebarOpen, setIsSidebarOpen
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 text-foreground hover:bg-muted rounded-md transition-colors"
+              className="flex-shrink-0 p-2.5 -mr-2 text-foreground hover:bg-muted rounded-md transition-colors touch-manipulation"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -97,45 +98,57 @@ const Navigation: React.FC<NavigationProps> = ({ isSidebarOpen, setIsSidebarOpen
             </button>
           </div>
 
-          {/* Mobile Menu */}
+          {/* Mobile Menu Dropdown - Full width below top bar */}
           {isMenuOpen && (
-            <div className="lg:hidden py-4 border-t border-border bg-background">
-              <div className="flex flex-col gap-2">
+            <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-md max-h-[calc(100vh-4rem)] sm:max-h-[calc(100vh-72px)] overflow-y-auto">
+              <div className="flex flex-col py-3 px-2">
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
                     to={link.href}
                     className={cn(
-                      "px-4 py-3 text-sm font-medium text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
+                      "flex items-center gap-3 px-4 py-3 text-sm font-medium text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
                       location.pathname === link.href && "bg-muted"
                     )}
                     onClick={() => setIsMenuOpen(false)}
                   >
+                    <span className="flex-shrink-0 w-5 h-5">{link.icon}</span>
                     {link.name}
                   </Link>
                 ))}
-                <div className="flex flex-col gap-2 mt-4 px-4">
+                <div className="flex flex-col gap-1 mt-2 pt-3 border-t border-border">
                   {session ? (
                     <>
                       {location.pathname !== '/admin-panel' && (
-                        <Link to="/admin-panel" className="w-full">
-                          <Button variant="ghost" className="w-full">Admin</Button>
+                        <Link to="/admin-panel" className="w-full" onClick={() => setIsMenuOpen(false)}>
+                          <Button variant="ghost" className="w-full justify-start gap-3">
+                            <UserCog className="w-5 h-5" />
+                            Admin
+                          </Button>
                         </Link>
                       )}
                       {isAdminOrClubAdmin && (
-                        <Button variant="ghost" className="w-full text-destructive hover:text-destructive" onClick={handleLogout}>
-                          <LogOut className="mr-2 h-4 w-4" />
+                        <Button variant="ghost" className="w-full justify-start gap-3 text-destructive hover:text-destructive" onClick={handleLogout}>
+                          <LogOut className="w-5 h-5" />
                           Logout
                         </Button>
                       )}
                     </>
                   ) : (
-                    <Link to="/admin-login" className="w-full">
-                      <Button variant="ghost" className="w-full">Login</Button>
+                    <Link to="/admin-login" className="w-full" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="ghost" className="w-full justify-start gap-3">
+                        <LogIn className="w-5 h-5" />
+                        Login
+                      </Button>
                     </Link>
                   )}
                   {!session && (
-                    <Button className="w-full shadow-card">Apply Now</Button>
+                    <a href="https://rsuip.org/application-form/" target="_blank" rel="noopener noreferrer" className="w-full" onClick={() => setIsMenuOpen(false)}>
+                      <Button className="w-full shadow-card justify-center gap-2">
+                        <FilePenLine className="w-4 h-4" />
+                        Apply Now
+                      </Button>
+                    </a>
                   )}
                 </div>
               </div>

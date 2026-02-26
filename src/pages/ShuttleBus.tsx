@@ -86,11 +86,11 @@ const ShuttleBus = () => {
 
   return (
     <>
-      <main>
-        <section id="shuttle" className="pb-20 pt-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="font-playfair text-4xl md:text-5xl font-bold text-foreground mb-4">
+      <div>
+        <section id="shuttle" className="pb-16 sm:pb-20 pt-6 sm:pt-8 lg:pt-20 bg-background">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center mb-10 sm:mb-16">
+              <h2 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
                 Shuttle Bus Service
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -99,7 +99,7 @@ const ShuttleBus = () => {
             </div>
 
             {/* Live GPS demo */}
-            <Card className="max-w-5xl mx-auto mb-12 overflow-hidden border-2 border-primary/20 bg-card">
+            <Card className="max-w-5xl mx-auto mb-8 sm:mb-12 overflow-hidden border-2 border-primary/20 bg-card">
               <div className="bg-primary/5 px-4 py-3 border-b border-primary/20 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
@@ -128,13 +128,13 @@ const ShuttleBus = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-4">
+              <div className="p-3 sm:p-4">
                 <div className="flex items-center gap-2 mb-3 text-muted-foreground">
                   <MapPinned className="w-4 h-4" />
                   <span className="text-sm font-medium">Campus shuttle map</span>
                 </div>
                 {/* Map container: SVG routes + absolutely positioned bus icons */}
-                <div className="relative w-full aspect-[16/10] min-h-[280px] rounded-lg bg-muted/40 border border-border overflow-hidden">
+                <div className="relative w-full aspect-[16/10] min-h-[200px] sm:min-h-[280px] rounded-lg bg-muted/40 border border-border overflow-hidden">
                   <svg
                     className="absolute inset-0 w-full h-full"
                     viewBox="0 0 100 100"
@@ -220,11 +220,11 @@ const ShuttleBus = () => {
             </Card>
 
             {/* Route cards */}
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
               {routes.map((route) => (
                 <Card
                   key={route.name}
-                  className="p-8 border-2 hover:border-primary transition-all duration-300 hover:shadow-elegant bg-card"
+                  className="p-6 sm:p-8 border-2 hover:border-primary transition-all duration-300 hover:shadow-elegant bg-card"
                 >
                   <div className="flex items-center justify-between mb-6">
                     <Badge className="text-base px-4 py-2 shadow-card">
@@ -270,8 +270,8 @@ const ShuttleBus = () => {
               ))}
             </div>
 
-            <div className="mt-12 max-w-3xl mx-auto">
-              <Card className="p-6 bg-primary/5 border-primary/20">
+            <div className="mt-8 sm:mt-12 max-w-3xl mx-auto">
+              <Card className="p-4 sm:p-6 bg-primary/5 border-primary/20">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <Bus className="w-6 h-6 text-primary" />
@@ -290,7 +290,7 @@ const ShuttleBus = () => {
             </div>
           </div>
         </section>
-      </main>
+      </div>
       <Footer />
     </>
   );

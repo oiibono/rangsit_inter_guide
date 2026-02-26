@@ -105,11 +105,11 @@ const Canteen = () => {
 
   return (
     <>
-      <main className="pt-20 lg:pt-0 lg:mr-[80px]">
-        <section id="canteen" className="pb-20 lg:pt-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="font-playfair text-4xl md:text-5xl font-bold text-foreground mb-4">
+      <div>
+        <section id="canteen" className="pb-16 sm:pb-20 pt-6 sm:pt-8 lg:pt-20 bg-background">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center mb-10 sm:mb-16">
+              <h2 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
                 Canteen Services
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -117,11 +117,11 @@ const Canteen = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
               {canteens.map((canteen) => (
                 <Card
                   key={canteen.code}
-                  className="p-8 border-2 hover:border-primary transition-all duration-300 hover:shadow-elegant bg-card"
+                  className="p-6 sm:p-8 border-2 hover:border-primary transition-all duration-300 hover:shadow-elegant bg-card"
                 >
                   <div className="flex items-start justify-between mb-6">
                     <div>
@@ -180,11 +180,11 @@ const Canteen = () => {
             </div>
           </div>
         </section>
-      </main>
+      </div>
 
       {/* Building 6 interactive floor plan dialog */}
       <Dialog open={floorPlanOpen} onOpenChange={setFloorPlanOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-[calc(100vw-2rem)] max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <LayoutGrid className="w-5 h-5" />
@@ -195,11 +195,11 @@ const Canteen = () => {
             Click a stall to see its menu.
           </p>
 
-          <div className="border-2 border-border rounded-lg bg-muted/30 p-4 font-mono text-sm">
+          <div className="border-2 border-border rounded-lg bg-muted/30 p-3 sm:p-4 font-mono text-sm">
             {/* Floor plan grid with HTML structure */}
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {/* Entrance */}
-              <div className="col-span-3 flex justify-center">
+              <div className="col-span-2 sm:col-span-3 flex justify-center">
                 <div className="px-4 py-2 bg-primary/10 rounded-t-lg border border-primary/30 text-center font-medium text-primary">
                   Entrance
                 </div>
@@ -229,7 +229,7 @@ const Canteen = () => {
                 </button>
               ))}
               {/* Seating area */}
-              <div className="col-span-3 flex justify-center py-4">
+              <div className="col-span-2 sm:col-span-3 flex justify-center py-4">
                 <div className="w-full py-3 px-4 rounded-b-lg border border-dashed border-border bg-muted/50 text-center text-muted-foreground text-sm">
                   Seating area
                 </div>

@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground">
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-4 gap-8 mb-12">
+      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-10 sm:mb-12">
           {/* About */}
-          <div>
-            <h3 className="font-playfair text-2xl font-bold mb-4">
+          <div className="sm:col-span-2 lg:col-span-1">
+            <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
               Rangsit University
             </h3>
             <p className="text-primary-foreground/80 text-sm leading-relaxed mb-4">
@@ -49,7 +49,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold text-lg mb-4">Quick Links</h4>
+            <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="#" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
@@ -81,7 +81,7 @@ const Footer = () => {
 
           {/* Resources */}
           <div>
-            <h4 className="font-bold text-lg mb-4">Resources</h4>
+            <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Resources</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="#library" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
@@ -113,11 +113,11 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h4 className="font-bold text-lg mb-4">Contact Us</h4>
+            <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Contact Us</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5 text-secondary" />
-                <span className="text-primary-foreground/80">
+                <span className="text-primary-foreground/80 text-sm sm:text-base">
                   52/347 Muang-Ake, Phaholyothin Road, Lak-Hok, Pathumthani 12000
                 </span>
               </li>
@@ -144,8 +144,8 @@ const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-primary-foreground/20 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-primary-foreground/20 pt-6 sm:pt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
             <p className="text-primary-foreground/80 text-sm">
               © 2025 Rangsit University. All rights reserved.
             </p>
