@@ -38,6 +38,22 @@ const QuickLinks = () => {
       color: "accent",
       isImage: true,
     },
+    {
+      title: "RSU LMS",
+      description: "Learning Management System for courses and assignments",
+      icon: rangsitLogo,
+      href: "https://lms.rsu.ac.th/",
+      color: "accent",
+      isImage: true,
+    },
+    {
+      title: "RSU Academic Calendar",
+      description: "Academic calendar for the university",
+      icon: rangsitLogo,
+      href: "https://rsuip.org/academic-calendar/",
+      color: "accent",
+      isImage: true,
+    },
   ];
 
   return (
